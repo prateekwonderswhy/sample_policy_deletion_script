@@ -34,7 +34,7 @@ for i in range (customer_managed_policies_length):
 attached_batch_infra_policies = []
 
 for i in range(len(arn_customer_managed_policies)):
-    if "batch-infra" in arn_customer_managed_policies[i]:
+    if arn_customer_managed_policies[i].endswith("batch-job-policy"):
         attached_batch_infra_policies.append(arn_customer_managed_policies[i])
 
 
