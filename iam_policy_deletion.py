@@ -20,37 +20,37 @@ for i in range (attached_policies_length):
 
 ## List of all customer managed policies ARN with string "batch-infra"
 
-all_policies = client.list_policies(
+customer_managed_policies = client.list_policies(
     Scope='Local'
 )
 
-customer_managed_policies = []
+arn_customer_managed_policies = []
 
-all_policies_length = len((all_policies['Policies']))
+customer_managed_policies_length = len((customer_managed_policies['Policies']))
 
-for i in range (all_policies_length):
-    customer_managed_policies.append(all_policies['Policies'][i]['Arn'])
+for i in range (customer_managed_policies_length):
+    arn_customer_managed_policies.append(customer_managed_policies['Policies'][i]['Arn'])
 
-batch_infra_policies = []
+attached_batch_infra_policies = []
 
-for i in range(len(customer_managed_policies)):
-    if "batch-infra" in customer_managed_policies[i]:
-        batch_infra_policies.append(customer_managed_policies[i])
+for i in range(len(arn_customer_managed_policies)):
+    if "batch-infra" in arn_customer_managed_policies[i]:
+        attached_batch_infra_policies.append(arn_customer_managed_policies[i])
 
 
 ## List of ARN's that are to be deleted
 
-policy_deletion_list = list(set(batch_infra_policies) - set(arn_attached_policies))
+arn_policy_deletion_list = list(set(attached_batch_infra_policies) - set(arn_attached_policies))
 
 
 ## Deletion API call
 
-for i in range(len(policy_deletion_list)):
+for i in range(len(arn_policy_deletion_list)):
     delete_unused_policies = client.delete_policy(
-    PolicyArn= policy_deletion_list[i]
+    PolicyArn= arn_policy_deletion_list[i]
 )
 
-print("Deleted unused policies")
+print("Deleted unused policies with substring 'batch-infra' ")
 
 
 
